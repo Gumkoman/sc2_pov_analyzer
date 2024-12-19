@@ -1,0 +1,1 @@
+This project goal is to create a tool that will analize pov of starcraft 2 player to measure mouse accuracy. Input to analize would be something like https://www.youtube.com/watch?v=15tOAPIQ0Xw where its first person of a player without cammera. 
