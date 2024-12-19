@@ -33,3 +33,5 @@ previous/
 
 *.mp4
 *.avi
+
+check_correct_app.py
