@@ -44,3 +44,8 @@ archive/
 new_assets/
 *.csv
 *.jpg
+mouse_click_test.py
+extract_frame.py
+template_detection.py
+templates/
+procedure_templates/building/
