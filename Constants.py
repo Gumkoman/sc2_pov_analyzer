@@ -11,11 +11,11 @@ region2 = (250/1280, 590/720, 650/1280, 110/720)
 
 # Paths to images for templates
 TEMPLATES = {
-    "advanced_building_menu": ("./new_assets/advanced_building_menu.png", region1),
-    "basic_building_menu": ("./new_assets/basic_building_menu_2.png", region1),
-    "build_selection": ("./new_assets/build_selection.png", region1),
-    "test_to_spray_3": ("./new_assets/test_to_spray_3.png", region1),
-    "worker_selected": ("./new_assets/worker_selected.png", region2)
+    "advanced_building_menu": ("./assets/advanced_building_menu.png", region1),
+    "basic_building_menu": ("./assets/basic_building_menu_2.png", region1),
+    "build_selection": ("./assets/build_selection.png", region1),
+    "test_to_spray_3": ("./assets/test_to_spray_3.png", region1),
+    "worker_selected": ("./assets/worker_selected.png", region2)
 }
 
 class BuildingState(Enum):

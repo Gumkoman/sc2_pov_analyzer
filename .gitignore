@@ -49,3 +49,4 @@ extract_frame.py
 template_detection.py
 templates/
 procedure_templates/building/
+assets/
