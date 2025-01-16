@@ -30,8 +30,17 @@ MANIFEST
 archiwum/
 output_frames/
 previous/
+input_videos/
+output_videos/
+annotated/
 
 *.mp4
 *.avi
 
 check_correct_app.py
+detect_procedure_1.py
+detect_procedure_2.py
+archive/
+new_assets/
+*.csv
+*.jpg
