@@ -73,7 +73,7 @@ def generate_templates_probability(
         result[template.name] = max_val
     return result
 
-def test_states(frame, templates_probability,current_state):
+def test_states(frame, templates_probability,current_state,frame_count,procedure_counter):
 
     thresholds = {
         "worker_selected": 0.55,#
@@ -93,37 +93,40 @@ def test_states(frame, templates_probability,current_state):
         (templates_probability["advanced_building_menu"] > thresholds["advanced_building_menu"])
     )
     is_advanced_building_menu = templates_probability["build_selection"] > thresholds["build_selection"]
-    procedure_counter=0
+    # procedure_counter=0
     match current_state:
         case BuildingState.IDLE:
+            procedure_counter = 0
             if is_worker_selected:
                 current_state = BuildingState.WORKER_SELECTED
         case BuildingState.WORKER_SELECTED:
+            procedure_counter+=1
             if is_basic_building_menu:
                 current_state = BuildingState.BUILDING_MENU
             elif not is_worker_selected:
                 current_state = BuildingState.IDLE
         case BuildingState.BUILDING_MENU:
+            procedure_counter+=1
             if is_advanced_building_menu:
                 current_state = BuildingState.PLACE_BUILDING
         case BuildingState.PLACE_BUILDING:
+            procedure_counter+=1
             if is_worker_selected and not is_advanced_building_menu:
                 current_state = BuildingState.FINISHED
         case BuildingState.FINISHED:
             current_state = BuildingState.IDLE
-            print("FINISHED")
+            print(f"FINISHED at {frame_count} procedure took {procedure_counter}")
+            procedure_counter = 0
 
     start_x,start_y = 10 ,40
     cv2.putText(frame,f"State:{current_state}",(start_x,start_y),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-
     for name in thresholds:
         start_y += 40
         if templates_probability[name] > thresholds[name]:
             cv2.putText(frame,f"{name}:\t{templates_probability[name]:.2f}",(start_x,start_y),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2,cv2.LINE_AA)
         else:
             cv2.putText(frame,f"{name}:\t{templates_probability[name]:.2f}",(start_x,start_y),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
-
-
+    
     return frame,current_state
 
 
@@ -145,11 +148,11 @@ def process_video(
     loaded_templates = load_templates(templates,frame_width,frame_height)
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_video_path, fourcc, fps, (frame_width, frame_height))
+    # out = cv2.VideoWriter(output_video_path, fourcc, fps, (frame_width, frame_height))
     current_state = BuildingState.IDLE
 
     frame_count = 0
-
+    result = []
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -159,11 +162,11 @@ def process_video(
         frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         templates_probability = generate_templates_probability(loaded_templates,frame_width,frame_height,frame_gray)
-
         
-        new_frame,current_state = test_states(frame,templates_probability,current_state)
-
-        out.write(new_frame)
+        # new_frame,current_state = test_states(frame,templates_probability,current_state,frame_count,procedure_counter)
+        result.append(templates_probability)
+        # out.write(new_frame)
     
     cap.release()
-    out.release()
+    # out.release()
+    return result
