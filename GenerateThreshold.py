@@ -129,7 +129,6 @@ def find_threshold(template_name, template_results, video_path):
     template_path = TEMPLATES[template_name][0]
     test_path =  save_frame_from_video(cap,template_results[0]["frame"],"./assets/temp.png")
     res = compare_images(template_path,"./assets/temp.png")
-    print(f"Res:{res}")
     if res == False :
         cap.release()
         return 1.0
@@ -137,7 +136,6 @@ def find_threshold(template_name, template_results, video_path):
     current_val = 0.9 * max_value
 
     while True:
-        print(f"Current value is {current_val}")
         frame_data = find_closest(current_val,template_results)
         if frame_data == None:
             cap.release()
@@ -168,11 +166,7 @@ def generate_thresholds(matching_results,video_path):
 
     
     for template_results in lists_of_results:
-        print(f"template_res:{template_results}")
         sorted_data = sorted(lists_of_results[template_results], key=lambda x: x['result'], reverse=True)
-        print(sorted_data[0])
         threshold = find_threshold(template_results,sorted_data,video_path)
-        thresholds[template_results] = threshold
-        print(f"Threshold for {template_results} is {threshold}")
-        
+        thresholds[template_results] = threshold       
     return thresholds

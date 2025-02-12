@@ -51,5 +51,6 @@ template_detection.py
 templates/
 procedure_templates/building/
 assets/
-
+res/
+frames/
 image.png
